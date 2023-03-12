@@ -1,4 +1,5 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import '../index.css';
 import api from '../utils/Api.js';
 import Header from './Header.js';
@@ -10,16 +11,20 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js';
 import AddPlacePopup from './AddPlacePopup.js';
+import Login from './Login';
+import Register from './Register';
+
 
 function App() {
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState({name: '', link: ''});
-  const [currentUser, setCurrentUser] = React.useState({});
-  const [cards, setCards] = React.useState([]);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState({name: '', link: ''});
+  const [currentUser, setCurrentUser] = useState({});
+  const [cards, setCards] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     api.getInitialUserData()
     .then(data => {
       setCurrentUser(data);
@@ -29,7 +34,7 @@ function App() {
     })
   }, [])
 
-  React.useEffect(() => {
+  useEffect(() => {
     api.getInitialCards()
     .then((dataCard) => {
         setCards(dataCard)
@@ -124,14 +129,19 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
   <div className="page">
     <Header />
+    <Routes>
+      <Route path="/" element={!loggedIn ? <Navigate to="/sign-in" replace /> : <Navigate to="/sign-up" replace />}></Route>
+      <Route path="/sign-up" element={<Register />}></Route>
+      <Route path="/sign-in" element={<Login />}></Route>
+    </Routes>
     <Main
-    cards={cards}
-    onEditProfile={handleEditProfileClick}
-    onAddPlace={handleAddPlaceClick}
-    onEditAvatar={handleEditAvatarClick}
-    onCardClick={setSelectedCard}
-    onCardLike={handleCardLike}
-    onCardDelete={handleCardDelete}
+      cards={cards}
+      onEditProfile={handleEditProfileClick}
+      onAddPlace={handleAddPlaceClick}
+      onEditAvatar={handleEditAvatarClick}
+      onCardClick={setSelectedCard}
+      onCardLike={handleCardLike}
+      onCardDelete={handleCardDelete}
     />
     <Footer />
     {/*Попап редактирования данных*/}

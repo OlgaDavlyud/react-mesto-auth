@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from '../images/logo.png';
-// import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 
 function Header(email) {
     return (
@@ -10,20 +10,20 @@ function Header(email) {
                 src={logo}
                 alt="Место Россия - логотип проекта"
             />
-            {/* <Routes>
-              <Route exact path="/">
+            <Routes>
+              <Route exact path="/" element={
                 <div className="header__wrapper">
                   <p className="header__user">{ email }</p>
                   <button className="header__logout">Выйти</button>
-                </div>
+                </div>}>
               </Route>
-              <Route path="/sign-up">
-                <Link className="header__auth-link" to="sign-in">Войти</Link>
+              <Route path="/sign-up" element={
+              <Link className="header__auth-link" to="sign-in">Войти</Link>}>
               </Route>
-              <Route path="/sign-in">
-                <Link className="header__auth-link" to="sign-up">Регистрация</Link>
+              <Route path="/sign-in" element={
+              <Link className="header__auth-link" to="sign-up">Регистрация</Link>}>
               </Route>
-            </Routes> */}
+            </Routes>
         </header>
     );
 }

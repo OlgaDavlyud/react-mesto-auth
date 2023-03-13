@@ -13,12 +13,15 @@ import EditAvatarPopup from './EditAvatarPopup.js';
 import AddPlacePopup from './AddPlacePopup.js';
 import Login from './Login';
 import Register from './Register';
+import ProtectedRouteElement from "./ProtectedRoute";
+import InfoTooltip from './InfoTooltip';
 
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  // const [isInfoTooltipPopup, setIsInfoTooltipPopup] = useState(false);
   const [selectedCard, setSelectedCard] = useState({name: '', link: ''});
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
@@ -61,6 +64,7 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setSelectedCard({name: '', link: ''});
+    // setIsInfoTooltipPopup(false);
   }
 
   function handleCardLike(card) {
@@ -130,11 +134,9 @@ function App() {
   <div className="page">
     <Header />
     <Routes>
-      <Route path="/" element={!loggedIn ? <Navigate to="/sign-in" replace /> : <Navigate to="/sign-up" replace />}></Route>
-      <Route path="/sign-up" element={<Register />}></Route>
-      <Route path="/sign-in" element={<Login />}></Route>
-    </Routes>
-    <Main
+      <Route path="/"
+      element={<ProtectedRouteElement
+      element={Main}
       cards={cards}
       onEditProfile={handleEditProfileClick}
       onAddPlace={handleAddPlaceClick}
@@ -142,7 +144,11 @@ function App() {
       onCardClick={setSelectedCard}
       onCardLike={handleCardLike}
       onCardDelete={handleCardDelete}
-    />
+      loggedIn={loggedIn}
+      />}></Route>
+      <Route path="/sign-up" element={<Register />}></Route>
+      <Route path="/sign-in" element={!loggedIn ? <Navigate to="/sign-up" replace /> : <Login />}></Route>
+    </Routes>
     <Footer />
     {/*Попап редактирования данных*/}
     <EditProfilePopup
@@ -174,6 +180,9 @@ function App() {
     onClose={closeAllPopups}
     />
   </div>
+  <InfoTooltip
+  // onClose={closeAllPopups}
+  />
   </CurrentUserContext.Provider>
   );
 }

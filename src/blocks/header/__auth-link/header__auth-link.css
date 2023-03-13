@@ -7,5 +7,12 @@
     font-size: 18px;
     line-height: 22px;
     text-align: right;
+
     color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.header__auth-link:hover{
+    opacity: 0.6;
 }

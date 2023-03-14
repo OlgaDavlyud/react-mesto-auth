@@ -1,13 +1,36 @@
-import React from "react";
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from 'react-router-dom';
+import * as Auth from '../utils/Auth';
 
-function Register() {
+const Register = () => {
+  const [formValue, setFormValue] = useState({email: '', password: ''})
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+
+    setFormValue({
+      ...formValue,
+      [name]: value
+    });
+  }
+
+  const handleSubmit = (e) => {
+     e.preventDefault();
+     const { email, password } = formValue;
+     Auth.register(email, password)
+     .then((res) => {
+        console.log(res);
+        navigate('/sign-in', {replace: true});
+        console.log('hello');
+        })
+    }
 
     return(
         <div className="register">
         <div className="register__container">
             <p className="register__title">Регистрация</p>
-            <form className="register__form" name="register__form">
+            <form className="register__form" name="register__form" onSubmit={handleSubmit}>
                 <label className="register__form-field">
                 <input
                     className="register__input register__input-email"
@@ -15,11 +38,11 @@ function Register() {
                     name="email"
                     id="emailAddress"
                     placeholder="Email"
-                    defaultValue=""
+                    value={formValue.email}
                     required=""
                     minLength={4}
                     maxLength={30}
-                    // onChange={handleChangeName}
+                    onChange={handleChange}
                 />
                 <span className="register__error-visible email-error-visible" />
                 </label>
@@ -30,11 +53,11 @@ function Register() {
                         name="password"
                         id="userPassword"
                         placeholder="Пароль"
-                        defaultValue=""
+                        value={formValue.password}
                         required=""
                         minLength={2}
                         maxLength={200}
-                        // onChange={handleChangeDescription}
+                        onChange={handleChange}
                     />
                     <span className="register__error-visible password-error-visible" />
                 </label>
@@ -42,6 +65,7 @@ function Register() {
                     className="register__button-submit"
                     type="submit"
                     name="button-submit"
+                    onSubmit={handleSubmit}
                     >
                     Зарегистрироваться
                 </button>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import '../index.css';
 import api from '../utils/Api.js';
@@ -129,25 +129,34 @@ function App() {
     });
   }
 
+  function handleLogin() {
+    setLoggedIn(true);
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
   <div className="page">
     <Header />
     <Routes>
       <Route path="/"
-      element={<ProtectedRouteElement
-      element={Main}
-      cards={cards}
-      onEditProfile={handleEditProfileClick}
-      onAddPlace={handleAddPlaceClick}
-      onEditAvatar={handleEditAvatarClick}
-      onCardClick={setSelectedCard}
-      onCardLike={handleCardLike}
-      onCardDelete={handleCardDelete}
-      loggedIn={loggedIn}
-      />}></Route>
+        element={
+          <ProtectedRouteElement
+          element={Main}
+          cards={cards}
+          onEditProfile={handleEditProfileClick}
+          onAddPlace={handleAddPlaceClick}
+          onEditAvatar={handleEditAvatarClick}
+          onCardClick={setSelectedCard}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
+          loggedIn={loggedIn}
+          />
+        }
+      >
+      </Route>
       <Route path="/sign-up" element={<Register />}></Route>
-      <Route path="/sign-in" element={!loggedIn ? <Navigate to="/sign-up" replace /> : <Login />}></Route>
+      <Route path="/sign-in" element={!loggedIn ? <Navigate to="/sign-up" replace /> : <Login handleLogin={handleLogin}/>} />
+      {/* <Route path="/sign-in" element={<Login handleLogin={handleLogin} />} /> */}
     </Routes>
     <Footer />
     {/*Попап редактирования данных*/}

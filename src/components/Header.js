@@ -18,10 +18,10 @@ function Header(email) {
                 </div>}>
               </Route>
               <Route path="/sign-up" element={
-              <Link className="header__auth-link" to="sign-in">Войти</Link>}>
+              <Link className="header__auth-link" to="/sign-in">Войти</Link>}>
               </Route>
               <Route path="/sign-in" element={
-              <Link className="header__auth-link" to="sign-up">Регистрация</Link>}>
+              <Link className="header__auth-link" to="/sign-up">Регистрация</Link>}>
               </Route>
             </Routes>
         </header>

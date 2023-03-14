@@ -1,12 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import * as Auth from '../utils/Auth';
 
-function Login() {
+function Login(handleLogin) {
+    const [formValue, setFormValue] = useState({email: '', password: ''});
+    const navigate = useNavigate();
+
+      const handleChange = (e) => {
+        const {name, value} = e.target;
+
+        setFormValue({
+          ...formValue,
+          [name]: value
+        });
+      }
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        const { email, password } = formValue;
+        if (!email || !password){
+          return;
+        }
+        Auth.login(email, password)
+          .then((data) => {
+            console.log(data)
+          if (data.token){
+            setFormValue({email: '', password: ''});
+            handleLogin();
+            navigate('/', {replace: true});
+          }
+          })
+          .catch(err => console.log(err));
+      }
 
     return(
         <div className="login">
             <div className="login__container">
                 <p className="login__title">Вход</p>
-                <form className="login__form" name="login__form">
+                <form className="login__form" name="login__form" onSubmit={handleSubmit}>
                     <label className="login__form-field">
                     <input
                         className="login__input login__input-email"
@@ -14,11 +45,11 @@ function Login() {
                         name="email"
                         id="emailAddress"
                         placeholder="Email"
-                        defaultValue=""
+                        value={formValue.email}
                         required=""
                         minLength={4}
                         maxLength={30}
-                        // onChange={handleChangeName}
+                        onChange={handleChange}
                     />
                     <span className="login__error-visible email-error-visible" />
                     </label>
@@ -29,11 +60,11 @@ function Login() {
                             name="password"
                             id="userPassword"
                             placeholder="Пароль"
-                            defaultValue=""
+                            value={formValue.password}
                             required=""
                             minLength={2}
                             maxLength={200}
-                            // onChange={handleChangeDescription}
+                            onChange={handleChange}
                         />
                         <span className="login__error-visible password-error-visible" />
                     </label>

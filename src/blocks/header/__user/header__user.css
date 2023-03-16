@@ -11,4 +11,7 @@
     text-align: right;
 
     color: #fff;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }

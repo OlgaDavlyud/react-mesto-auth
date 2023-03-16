@@ -84,3 +84,9 @@
 @import url(./blocks/popup-info-tooltip/__info-tooltip-form/popup__info-tooltip-form.css);
 @import url(./blocks/popup-info-tooltip/__tooltip-image/popup__tooltip-image.css);
 @import url(./blocks/popup-info-tooltip/__text-info-tooltip/popup__text-info-tooltip.css);
+
+@import url(./blocks/not-found/not-found.css);
+@import url(./blocks/not-found/__title/not-found__title.css);
+@import url(./blocks/not-found/__image/not-found__image.css);
+@import url(./blocks/not-found/__text/not-found__text.css);
+@import url(./blocks/not-found/__type-to-main/button__type-to-main.css);

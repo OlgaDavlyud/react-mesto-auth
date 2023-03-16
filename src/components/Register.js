@@ -4,7 +4,6 @@ import * as Auth from '../utils/Auth';
 
 const Register = ({openInfoTooltip}) => {
   const [formValue, setFormValue] = useState({email: '', password: ''})
-//   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const {name, value} = e.target;
@@ -22,8 +21,6 @@ const Register = ({openInfoTooltip}) => {
      .then((res) => {
         console.log(res);
         openInfoTooltip();
-        // navigate('/sign-in', {replace: true});
-        console.log('hello');
         })
     }
 

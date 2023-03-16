@@ -23,11 +23,8 @@ function Login({ handleLogin, openInfoTooltip }) {
         }
         Auth.login(email, password)
           .then((data) => {
-            console.log(data)
           if (data.token){
             setFormValue({email: '', password: ''});
-            console.log(email);
-            console.log(password);
             handleLogin();
             navigate('/', {replace: true});
           }

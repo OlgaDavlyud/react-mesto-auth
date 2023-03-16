@@ -14,6 +14,7 @@ import AddPlacePopup from './AddPlacePopup.js';
 import Login from './Login';
 import Register from './Register';
 import ProtectedRouteElement from "./ProtectedRoute";
+import PageNotFound from './PageNotFound';
 import * as Auth from '../utils/Auth';
 import InfoTooltip from './InfoTooltip';
 import done from "../images/done.svg";
@@ -30,7 +31,8 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [userData, setUserData] = useState({email: ''})
+  const [userEmail, setUserEmail] = useState({email: ''});
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -80,8 +82,12 @@ function App() {
     setSelectedCard({name: '', link: ''});
   }
 
-  function closeInfoTooltip() {
+  function closeInfoTooltipDone() {
     setIsInfoTooltipPopupDone(false);
+    navigate('/sign-in', {replace: true});
+  }
+
+  function closeInfoTooltipError() {
     setIsInfoTooltipPopupError(false);
   }
 
@@ -156,20 +162,18 @@ function App() {
   }, [])
 
   const tokenCheck = () => {
-    if (localStorage.getItem('token')){
-      const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    if (token){
       Auth.checkToken(token)
       .then((res) => {
-        console.log(res);
         if (res){
-          console.log(res)
-          const userData = {
-            email: res.email,
+          const userEmail = {
+            email: res.data.email
           }
-          console.log(res.email);
+          console.log(userEmail);
           setLoggedIn(true);
-          setUserData(userData);
-          console.log(userData)
+          setUserEmail(userEmail);
+          console.log(userEmail);
           navigate("/", {replace: true})
         }
       })
@@ -183,8 +187,7 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
   <div className="page">
     <Header
-    userData={userData}
-    />
+    userEmail={userEmail} />
     <Routes>
       <Route path="/"
         element={
@@ -204,6 +207,7 @@ function App() {
       </Route>
       <Route path="/sign-up" element={<Register openInfoTooltip={openInfoTooltipDone} />}></Route>
       <Route path="/sign-in" element={<Login handleLogin={handleLogin} openInfoTooltip={openInfoTooltipError} />} />
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
     <Footer />
     {/*Попап редактирования данных*/}
@@ -236,8 +240,8 @@ function App() {
     onClose={closeAllPopups}
     />
     <InfoTooltip
-      isOpen={openInfoTooltipDone}
-      onClose={closeInfoTooltip}
+      isOpen={isInfoTooltipPopupDone}
+      onClose={closeInfoTooltipDone}
     >
       <div className={`popup__info-tooltip-form`}>
           <img
@@ -253,8 +257,8 @@ function App() {
     onClose={closeAllPopups}
     />
     <InfoTooltip
-      isOpen={openInfoTooltipError}
-      onClose={closeInfoTooltip}
+      isOpen={isInfoTooltipPopupError}
+      onClose={closeInfoTooltipError}
     >
       <div className={`popup__info-tooltip-form`}>
           <img

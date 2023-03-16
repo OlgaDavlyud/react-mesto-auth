@@ -1,13 +1,15 @@
 import React from 'react';
 import logo from '../images/logo.png';
-import { Routes, Route, Link, useHistory } from 'react-router-dom';
+import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 
-function Header() {
-  const history = useHistory();
+function Header({userEmail}) {
+  const navigate = useNavigate();
+  let { email } = userEmail;
+  console.log(email);
 
   function signOut(){
     localStorage.removeItem('token');
-    history.push('/sign-in');
+    navigate('/sign-in', {replace: true});
   }
 
     return (
@@ -20,7 +22,7 @@ function Header() {
             <Routes>
               <Route exact path="/" element={
                 <div className="header__wrapper">
-                  <p className="header__user">email</p>
+                  <p className="header__user">{email}</p>
                   <button className="header__logout" onClick={signOut}>Выйти</button>
                 </div>}>
               </Route>

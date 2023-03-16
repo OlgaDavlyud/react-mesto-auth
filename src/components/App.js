@@ -170,10 +170,8 @@ function App() {
           const userEmail = {
             email: res.data.email
           }
-          console.log(userEmail);
           setLoggedIn(true);
           setUserEmail(userEmail);
-          console.log(userEmail);
           navigate("/", {replace: true})
         }
       })

@@ -5,7 +5,6 @@ import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 function Header({userEmail}) {
   const navigate = useNavigate();
   let { email } = userEmail;
-  console.log(email);
 
   function signOut(){
     localStorage.removeItem('token');

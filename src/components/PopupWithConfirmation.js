@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 function PopupWithConfirmation({title, name, buttonText, onClose}) {
     return (
         <div className={`popup popup-${name}`}>

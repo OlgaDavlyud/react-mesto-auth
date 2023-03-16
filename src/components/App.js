@@ -14,14 +14,16 @@ import AddPlacePopup from './AddPlacePopup.js';
 import Login from './Login';
 import Register from './Register';
 import ProtectedRouteElement from "./ProtectedRoute";
-// import InfoTooltip from './InfoTooltip';
+import InfoTooltip from './InfoTooltip';
+import done from "../images/done.svg";
+import error from "../images/error.svg";
 
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  // const [isInfoTooltipPopup, setIsInfoTooltipPopup] = useState(false);
+  const [isInfoTooltipPopup, setIsInfoTooltipPopup] = useState(false);
   const [selectedCard, setSelectedCard] = useState({name: '', link: ''});
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
@@ -59,12 +61,19 @@ function App() {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
   }
 
+  function openInfoTooltip() {
+    setIsInfoTooltipPopup(!isInfoTooltipPopup);
+  }
+
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setSelectedCard({name: '', link: ''});
-    // setIsInfoTooltipPopup(false);
+  }
+
+  function closeInfoTooltip() {
+    setIsInfoTooltipPopup(false);
   }
 
   function handleCardLike(card) {
@@ -154,8 +163,7 @@ function App() {
         }
       >
       </Route>
-      <Route path="/sign-up" element={<Register />}></Route>
-      {/* <Route path="/sign-in" element={!loggedIn ? <Navigate to="/sign-up" replace /> : <Login handleLogin={handleLogin} />} /> */}
+      <Route path="/sign-up" element={<Register openInfoToolTip={openInfoToolTip} />}></Route>
       <Route path="/sign-in" element={<Login handleLogin={handleLogin} />} />
     </Routes>
     <Footer />
@@ -188,10 +196,38 @@ function App() {
     card={selectedCard}
     onClose={closeAllPopups}
     />
+    <InfoTooltip
+      isOpen={isInfoTooltipPopup}
+      onClose={closeInfoToolTip}
+    >
+      <div className={`popup__info-tooltip-form`}>
+          <img
+              className="popup__tooltip-image"
+              src={done}
+              alt="Выполнено"
+          />
+          <p className="popup__text-info-tooltip">Вы успешно зарегистрировались!</p>
+      </div>
+    </InfoTooltip>
+    <ImagePopup
+    card={selectedCard}
+    onClose={closeAllPopups}
+    />
+    <InfoTooltip
+      isOpen={isInfoTooltipPopup}
+      onClose={closeInfoToolTip}
+    >
+      <div className={`popup__info-tooltip-form`}>
+          <img
+              className="popup__tooltip-image"
+              src={error}
+              alt="Ошибка"
+          />
+          <p className="popup__text-info-tooltip">Что-то пошло не так!
+                Попробуйте ещё раз.</p>
+      </div>
+    </InfoTooltip>
   </div>
-  {/* <InfoTooltip
-  // onClose={closeAllPopups}
-  /> */}
   </CurrentUserContext.Provider>
   );
 }

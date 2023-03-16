@@ -1,32 +1,16 @@
 import React from "react";
-// import error from "../images/error.svg";
 
-function InfoTooltip(src, text, alt){
+function InfoTooltip({children, isOpen, onClose}){
     return(
-        <div className={`popup popup-info-tooltip`}>
+        <div className={`popup popup-info-tooltip ${isOpen && 'popup_opened'}`}>
         <div className={`popup__info-tooltip-container`}>
             <button
                 className="popup__button-close"
                 type="reset"
                 name="button-close"
+                onClick={onClose}
             ></button>
-                    <div className={`popup__info-tooltip-form`}>
-                        <img
-                            className="popup__tooltip-image"
-                            src={src}
-                            alt={alt}
-                        />
-                        <p className="popup__text-info-tooltip">{text}</p>
-                    </div>
-                    {/* <div className={`popup__info-tooltip-form`}>
-                        <img
-                            className="popup__tooltip-image"
-                            src={error}
-                            alt="Ошибка"
-                        />
-                        <p className="popup__text-info-tooltip">Что-то пошло не так!
-                        Попробуйте ещё раз.</p>
-                    </div> */}
+            {children}
         </div>
   </div>
     );

@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import * as Auth from '../utils/Auth';
-// import InfoTooltip from './InfoTooltip';
-// import done from "../images/done.svg";
 
-const Register = () => {
+const Register = ({openInfoToolTip}) => {
   const [formValue, setFormValue] = useState({email: '', password: ''})
   const navigate = useNavigate();
 
@@ -23,6 +21,7 @@ const Register = () => {
      Auth.register(email, password)
      .then((res) => {
         console.log(res);
+        openInfoToolTip();
         navigate('/sign-in', {replace: true});
         console.log('hello');
         })
@@ -73,10 +72,6 @@ const Register = () => {
                 </button>
                 <p className="register__question">Уже зарегистрированы? <Link className="register__login-link" to='/sign-in' >Войти</Link></p>
             </form>
-            {/* <InfoTooltip
-                text="Вы успешно зарегистрировались!"
-                src={done}
-                alt="Выполнено" /> */}
         </div>
     </div>
     );

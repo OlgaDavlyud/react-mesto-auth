@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Auth from '../utils/Auth';
 
-function Login(handleLogin) {
+function Login({ handleLogin }) {
     const [formValue, setFormValue] = useState({email: '', password: ''});
     const navigate = useNavigate();
 

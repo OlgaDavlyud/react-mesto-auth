@@ -163,7 +163,7 @@ function App() {
         }
       >
       </Route>
-      <Route path="/sign-up" element={<Register openInfoToolTip={openInfoToolTip} />}></Route>
+      <Route path="/sign-up" element={<Register openInfoTooltip={openInfoTooltip} />}></Route>
       <Route path="/sign-in" element={<Login handleLogin={handleLogin} />} />
     </Routes>
     <Footer />
@@ -198,7 +198,7 @@ function App() {
     />
     <InfoTooltip
       isOpen={isInfoTooltipPopup}
-      onClose={closeInfoToolTip}
+      onClose={closeInfoTooltip}
     >
       <div className={`popup__info-tooltip-form`}>
           <img
@@ -215,7 +215,7 @@ function App() {
     />
     <InfoTooltip
       isOpen={isInfoTooltipPopup}
-      onClose={closeInfoToolTip}
+      onClose={closeInfoTooltip}
     >
       <div className={`popup__info-tooltip-form`}>
           <img

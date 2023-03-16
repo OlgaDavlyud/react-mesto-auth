@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import * as Auth from '../utils/Auth';
 
-const Register = ({openInfoToolTip}) => {
+const Register = ({openInfoTooltip}) => {
   const [formValue, setFormValue] = useState({email: '', password: ''})
   const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ const Register = ({openInfoToolTip}) => {
      Auth.register(email, password)
      .then((res) => {
         console.log(res);
-        openInfoToolTip();
+        openInfoTooltip();
         navigate('/sign-in', {replace: true});
         console.log('hello');
         })

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import '../index.css';
 import api from '../utils/Api.js';
 import Header from './Header.js';
@@ -14,7 +14,7 @@ import AddPlacePopup from './AddPlacePopup.js';
 import Login from './Login';
 import Register from './Register';
 import ProtectedRouteElement from "./ProtectedRoute";
-import InfoTooltip from './InfoTooltip';
+// import InfoTooltip from './InfoTooltip';
 
 
 function App() {
@@ -155,8 +155,8 @@ function App() {
       >
       </Route>
       <Route path="/sign-up" element={<Register />}></Route>
-      <Route path="/sign-in" element={!loggedIn ? <Navigate to="/sign-up" replace /> : <Login handleLogin={handleLogin}/>} />
-      {/* <Route path="/sign-in" element={<Login handleLogin={handleLogin} />} /> */}
+      {/* <Route path="/sign-in" element={!loggedIn ? <Navigate to="/sign-up" replace /> : <Login handleLogin={handleLogin} />} /> */}
+      <Route path="/sign-in" element={<Login handleLogin={handleLogin} />} />
     </Routes>
     <Footer />
     {/*Попап редактирования данных*/}
@@ -189,9 +189,9 @@ function App() {
     onClose={closeAllPopups}
     />
   </div>
-  <InfoTooltip
+  {/* <InfoTooltip
   // onClose={closeAllPopups}
-  />
+  /> */}
   </CurrentUserContext.Provider>
   );
 }

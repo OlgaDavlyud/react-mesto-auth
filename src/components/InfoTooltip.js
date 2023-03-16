@@ -1,9 +1,7 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
-import done from "../images/done.svg";
-import error from "../images/error.svg";
+// import error from "../images/error.svg";
 
-function InfoTooltip(onClose){
+function InfoTooltip(src, text, alt){
     return(
         <div className={`popup popup-info-tooltip`}>
         <div className={`popup__info-tooltip-container`}>
@@ -11,21 +9,16 @@ function InfoTooltip(onClose){
                 className="popup__button-close"
                 type="reset"
                 name="button-close"
-                // onClick={onClose}
             ></button>
-            <Routes>
-                <Route path="/sign-up" element={
                     <div className={`popup__info-tooltip-form`}>
                         <img
                             className="popup__tooltip-image"
-                            src={done}
-                            alt="Выполнено"
+                            src={src}
+                            alt={alt}
                         />
-                        <p className="popup__text-info-tooltip">Вы успешно зарегистрировались!</p>
-                    </div>}>
-                </Route>
-                <Route path="/sign-up" element={
-                    <div className={`popup__info-tooltip-form`}>
+                        <p className="popup__text-info-tooltip">{text}</p>
+                    </div>
+                    {/* <div className={`popup__info-tooltip-form`}>
                         <img
                             className="popup__tooltip-image"
                             src={error}
@@ -33,9 +26,7 @@ function InfoTooltip(onClose){
                         />
                         <p className="popup__text-info-tooltip">Что-то пошло не так!
                         Попробуйте ещё раз.</p>
-                    </div>}>
-                </Route>
-            </Routes>
+                    </div> */}
         </div>
   </div>
     );

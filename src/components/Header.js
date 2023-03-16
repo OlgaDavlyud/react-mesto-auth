@@ -2,7 +2,7 @@ import React from 'react';
 import logo from '../images/logo.png';
 import { Routes, Route, Link } from 'react-router-dom';
 
-function Header(email) {
+function Header() {
     return (
         <header className="header">
             <img
@@ -13,8 +13,8 @@ function Header(email) {
             <Routes>
               <Route exact path="/" element={
                 <div className="header__wrapper">
-                  <p className="header__user">{ email }</p>
-                  <button className="header__logout">Выйти</button>
+                  <p className="header__user">email</p>
+                  <Link className="header__logout" to="/sing-in">Выйти</Link>
                 </div>}>
               </Route>
               <Route path="/sign-up" element={

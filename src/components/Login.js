@@ -26,6 +26,8 @@ function Login(handleLogin) {
             console.log(data)
           if (data.token){
             setFormValue({email: '', password: ''});
+            console.log(email);
+            console.log(password);
             handleLogin();
             navigate('/', {replace: true});
           }

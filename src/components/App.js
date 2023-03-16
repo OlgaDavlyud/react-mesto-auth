@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import '../index.css';
 import api from '../utils/Api.js';
 import Header from './Header.js';
@@ -14,6 +14,7 @@ import AddPlacePopup from './AddPlacePopup.js';
 import Login from './Login';
 import Register from './Register';
 import ProtectedRouteElement from "./ProtectedRoute";
+import * as Auth from '../utils/Auth';
 import InfoTooltip from './InfoTooltip';
 import done from "../images/done.svg";
 import error from "../images/error.svg";
@@ -23,11 +24,14 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  const [isInfoTooltipPopup, setIsInfoTooltipPopup] = useState(false);
+  const [isInfoTooltipPopupDone, setIsInfoTooltipPopupDone] = useState(false);
+  const [isInfoTooltipPopupError, setIsInfoTooltipPopupError] = useState(false);
   const [selectedCard, setSelectedCard] = useState({name: '', link: ''});
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [userData, setUserData] = useState({email: ''})
+  const navigate = useNavigate();
 
   useEffect(() => {
     api.getInitialUserData()
@@ -61,8 +65,12 @@ function App() {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
   }
 
-  function openInfoTooltip() {
-    setIsInfoTooltipPopup(!isInfoTooltipPopup);
+  function openInfoTooltipDone() {
+    setIsInfoTooltipPopupDone(!isInfoTooltipPopupDone);
+  }
+
+  function openInfoTooltipError() {
+    setIsInfoTooltipPopupError(!isInfoTooltipPopupError);
   }
 
   function closeAllPopups() {
@@ -73,7 +81,8 @@ function App() {
   }
 
   function closeInfoTooltip() {
-    setIsInfoTooltipPopup(false);
+    setIsInfoTooltipPopupDone(false);
+    setIsInfoTooltipPopupError(false);
   }
 
   function handleCardLike(card) {
@@ -142,10 +151,40 @@ function App() {
     setLoggedIn(true);
   }
 
+  useEffect(() => {
+    tokenCheck();
+  }, [])
+
+  const tokenCheck = () => {
+    if (localStorage.getItem('token')){
+      const token = localStorage.getItem('token');
+      Auth.checkToken(token)
+      .then((res) => {
+        console.log(res);
+        if (res){
+          console.log(res)
+          const userData = {
+            email: res.email,
+          }
+          console.log(res.email);
+          setLoggedIn(true);
+          setUserData(userData);
+          console.log(userData)
+          navigate("/", {replace: true})
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+   }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
   <div className="page">
-    <Header />
+    <Header
+    userData={userData}
+    />
     <Routes>
       <Route path="/"
         element={
@@ -163,8 +202,8 @@ function App() {
         }
       >
       </Route>
-      <Route path="/sign-up" element={<Register openInfoTooltip={openInfoTooltip} />}></Route>
-      <Route path="/sign-in" element={<Login handleLogin={handleLogin} />} />
+      <Route path="/sign-up" element={<Register openInfoTooltip={openInfoTooltipDone} />}></Route>
+      <Route path="/sign-in" element={<Login handleLogin={handleLogin} openInfoTooltip={openInfoTooltipError} />} />
     </Routes>
     <Footer />
     {/*Попап редактирования данных*/}
@@ -197,7 +236,7 @@ function App() {
     onClose={closeAllPopups}
     />
     <InfoTooltip
-      isOpen={isInfoTooltipPopup}
+      isOpen={openInfoTooltipDone}
       onClose={closeInfoTooltip}
     >
       <div className={`popup__info-tooltip-form`}>
@@ -214,7 +253,7 @@ function App() {
     onClose={closeAllPopups}
     />
     <InfoTooltip
-      isOpen={isInfoTooltipPopup}
+      isOpen={openInfoTooltipError}
       onClose={closeInfoTooltip}
     >
       <div className={`popup__info-tooltip-form`}>

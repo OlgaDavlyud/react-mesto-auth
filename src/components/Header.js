@@ -1,8 +1,15 @@
 import React from 'react';
 import logo from '../images/logo.png';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link, useHistory } from 'react-router-dom';
 
 function Header() {
+  const history = useHistory();
+
+  function signOut(){
+    localStorage.removeItem('token');
+    history.push('/sign-in');
+  }
+
     return (
         <header className="header">
             <img
@@ -14,7 +21,7 @@ function Header() {
               <Route exact path="/" element={
                 <div className="header__wrapper">
                   <p className="header__user">email</p>
-                  <Link className="header__logout" to="/sing-in">Выйти</Link>
+                  <button className="header__logout" onClick={signOut}>Выйти</button>
                 </div>}>
               </Route>
               <Route path="/sign-up" element={

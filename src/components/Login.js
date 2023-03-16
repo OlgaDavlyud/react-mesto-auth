@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Auth from '../utils/Auth';
 
-function Login({ handleLogin }) {
+function Login({ handleLogin, openInfoTooltip }) {
     const [formValue, setFormValue] = useState({email: '', password: ''});
     const navigate = useNavigate();
 
@@ -32,7 +32,10 @@ function Login({ handleLogin }) {
             navigate('/', {replace: true});
           }
           })
-          .catch(err => console.log(err));
+          .catch((err) => {
+            openInfoTooltip();
+            console.log(err);
+          });
       }
 
     return(

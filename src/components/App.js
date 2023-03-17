@@ -40,8 +40,6 @@ function App() {
     if(loggedIn){
       Promise.all([api.getInitialUserData(), api.getInitialCards()])
       .then(([data, dataCard]) => {
-        console.log(data)
-        console.log(dataCard);
         setCurrentUser(data);
         setCards(dataCard);
       })
@@ -49,29 +47,7 @@ function App() {
         console.log(err);
       })
     }
-  }, []);
-
-  // useEffect(() => {
-  //   api
-  //     .getInitialUserData()
-  //     .then((data) => {
-  //       setCurrentUser(data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
-  // useEffect(() => {
-  //   api
-  //     .getInitialCards()
-  //     .then((dataCard) => {
-  //       setCards(dataCard);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
+  }, [loggedIn]);
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
@@ -208,13 +184,10 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      console.log(token)
       Auth.checkToken(token)
         .then((res) => {
           if (res) {
-            console.log(res);
-            setLoggedIn(loggedIn);
-            console.log(loggedIn);
+            setLoggedIn(true);
             setUserEmail({email: res.data.email});
             navigate('/', {replace: true});
           }
@@ -291,27 +264,19 @@ function App() {
         {/*Попап отображения большой карточки*/}
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
         <InfoTooltip
+          text="Вы успешно зарегистрировались!"
+          src={done}
+          alt={'Выполнено'}
           isOpen={isInfoTooltipPopupDone}
           onClose={closeInfoTooltipDone}
-        >
-          <div className={`popup__info-tooltip-form`}>
-            <img className="popup__tooltip-image" src={done} alt="Выполнено" />
-            <p className="popup__text-info-tooltip">
-              Вы успешно зарегистрировались!
-            </p>
-          </div>
-        </InfoTooltip>
+        />
         <InfoTooltip
+          text="Что-то пошло не так! Попробуйте ещё раз."
+          src={error}
+          alt={'Ошибка'}
           isOpen={isInfoTooltipPopupError}
           onClose={closeInfoTooltipError}
-        >
-          <div className={`popup__info-tooltip-form`}>
-            <img className="popup__tooltip-image" src={error} alt="Ошибка" />
-            <p className="popup__text-info-tooltip">
-              Что-то пошло не так! Попробуйте ещё раз.
-            </p>
-          </div>
-        </InfoTooltip>
+        />
       </div>
     </CurrentUserContext.Provider>
   );

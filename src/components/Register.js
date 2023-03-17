@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
-// import * as Auth from '../utils/Auth';
 
 const Register = ({onRegister}) => {
   const [formValue, setFormValue] = useState({email: '', password: ''})

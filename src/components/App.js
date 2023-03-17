@@ -37,26 +37,41 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api
-      .getInitialUserData()
-      .then((data) => {
+    if(loggedIn){
+      Promise.all([api.getInitialUserData(), api.getInitialCards()])
+      .then(([data, dataCard]) => {
+        console.log(data)
+        console.log(dataCard);
         setCurrentUser(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  useEffect(() => {
-    api
-      .getInitialCards()
-      .then((dataCard) => {
         setCards(dataCard);
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+    }
   }, []);
+
+  // useEffect(() => {
+  //   api
+  //     .getInitialUserData()
+  //     .then((data) => {
+  //       setCurrentUser(data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
+
+  // useEffect(() => {
+  //   api
+  //     .getInitialCards()
+  //     .then((dataCard) => {
+  //       setCards(dataCard);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
@@ -193,10 +208,13 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
+      console.log(token)
       Auth.checkToken(token)
         .then((res) => {
           if (res) {
-            setLoggedIn(true);
+            console.log(res);
+            setLoggedIn(loggedIn);
+            console.log(loggedIn);
             setUserEmail({email: res.data.email});
             navigate('/', {replace: true});
           }
@@ -205,7 +223,7 @@ function App() {
           console.log(err);
         });
     }
-  }, [] );
+  }, []);
 
   function handleSignOut(){
     localStorage.removeItem('token');

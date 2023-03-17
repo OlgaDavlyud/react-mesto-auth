@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import * as Auth from '../utils/Auth';
 
-function Login({ handleLogin, openInfoTooltip }) {
+function Login({ onLogin }) {
     const [formValue, setFormValue] = useState({email: '', password: ''});
-    const navigate = useNavigate();
 
       const handleChange = (e) => {
         const {name, value} = e.target;
@@ -21,18 +18,8 @@ function Login({ handleLogin, openInfoTooltip }) {
         if (!email || !password){
           return;
         }
-        Auth.login(email, password)
-          .then((data) => {
-          if (data.token){
-            setFormValue({email: '', password: ''});
-            handleLogin();
-            navigate('/', {replace: true});
-          }
-          })
-          .catch((err) => {
-            openInfoTooltip();
-            console.log(err);
-          });
+        onLogin(email, password);
+        setFormValue({ email: '', password: '' });
       }
 
     return(

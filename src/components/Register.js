@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
-import * as Auth from '../utils/Auth';
+// import * as Auth from '../utils/Auth';
 
-const Register = ({openInfoTooltip}) => {
+const Register = ({onRegister}) => {
   const [formValue, setFormValue] = useState({email: '', password: ''})
 
   const handleChange = (e) => {
@@ -17,11 +17,8 @@ const Register = ({openInfoTooltip}) => {
   const handleSubmit = (e) => {
      e.preventDefault();
      const { email, password } = formValue;
-     Auth.register(email, password)
-     .then((res) => {
-        console.log(res);
-        openInfoTooltip();
-        })
+     onRegister(email, password);
+     setFormValue({ email: '', password: '' });
     }
 
     return(

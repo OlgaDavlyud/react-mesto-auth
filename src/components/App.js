@@ -25,14 +25,15 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  const [isInfoTooltipPopupDone, setIsInfoTooltipPopupDone] = useState(false);
-  const [isInfoTooltipPopupError, setIsInfoTooltipPopupError] = useState(false);
+  // const [isInfoTooltipPopupDone, setIsInfoTooltipPopupDone] = useState(false);
+  // const [isInfoTooltipPopupError, setIsInfoTooltipPopupError] = useState(false);
   const [selectedCard, setSelectedCard] = useState({ name: "", link: "" });
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
 
   const [loggedIn, setLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState({ email: "" });
+  const [isInfoTooltip, setIsInfoTooltip] = useState(false);
 
   const navigate = useNavigate();
 
@@ -61,13 +62,13 @@ function App() {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
   }
 
-  function openInfoTooltipDone() {
-    setIsInfoTooltipPopupDone(!isInfoTooltipPopupDone);
+  function openInfoTooltip() {
+    setIsInfoTooltip(!isInfoTooltip);
   }
 
-  function openInfoTooltipError() {
-    setIsInfoTooltipPopupError(!isInfoTooltipPopupError);
-  }
+  // function openInfoTooltipError() {
+  //   setIsInfoTooltipPopupError(!isInfoTooltipPopupError);
+  // }
 
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
@@ -76,14 +77,13 @@ function App() {
     setSelectedCard({ name: "", link: "" });
   }
 
-  function closeInfoTooltipDone() {
-    setIsInfoTooltipPopupDone(false);
-    navigate("/sign-in", { replace: true });
+  function closeInfoTooltip() {
+    setIsInfoTooltip(false);
   }
 
-  function closeInfoTooltipError() {
-    setIsInfoTooltipPopupError(false);
-  }
+  // function closeInfoTooltipError() {
+  //   setIsInfoTooltipPopupError(false);
+  // }
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
@@ -158,10 +158,11 @@ function App() {
     Auth.register(email, password)
       .then((res) => {
         console.log(res);
-        openInfoTooltipDone();
+        openInfoTooltip();
       })
       .catch((err) => {
-        openInfoTooltipError();
+        openInfoTooltip();
+        // navigate("/sign-in", { replace: true });
         console.log(err);
       });
   };
@@ -176,7 +177,7 @@ function App() {
         }
       })
       .catch((err) => {
-        openInfoTooltipError();
+        openInfoTooltip();
         console.log(err);
       });
   }
@@ -264,19 +265,20 @@ function App() {
         {/*Попап отображения большой карточки*/}
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
         <InfoTooltip
-          text="Вы успешно зарегистрировались!"
+          loggedIn={loggedIn}
+          // text="Вы успешно зарегистрировались!"
           src={done}
           alt={'Выполнено'}
-          isOpen={isInfoTooltipPopupDone}
-          onClose={closeInfoTooltipDone}
+          isOpen={isInfoTooltip}
+          onClose={closeInfoTooltip}
         />
-        <InfoTooltip
+        {/* <InfoTooltip
           text="Что-то пошло не так! Попробуйте ещё раз."
           src={error}
           alt={'Ошибка'}
           isOpen={isInfoTooltipPopupError}
           onClose={closeInfoTooltipError}
-        />
+        /> */}
       </div>
     </CurrentUserContext.Provider>
   );
